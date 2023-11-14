@@ -1,7 +1,7 @@
-name: help-pr-command
+name: help-command
 on:
   repository_dispatch:
-    types: [help-pr-command]
+    types: [help-command]
 jobs:
   help:
     runs-on: ubuntu-latest
