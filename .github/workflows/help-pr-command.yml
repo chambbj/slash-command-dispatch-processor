@@ -5,6 +5,8 @@ on:
 jobs:
   help:
     runs-on: ubuntu-latest
+    permission:
+      pull-requests: write
     steps:
       - name: Update comment
         uses: peter-evans/create-or-update-comment@v3
