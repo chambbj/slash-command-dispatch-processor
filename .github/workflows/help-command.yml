@@ -8,17 +8,30 @@ jobs:
     permissions:
       pull-requests: write
     steps:
+      # Checkout the pull request branch
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.PAT }}
+          repository: ${{ github.event.client_payload.pull_request.head.repo.full_name }}
+          ref: ${{ github.event.client_payload.pull_request.head.ref }}
+
+      # Append a response to the user that issued the command
+      - name: Append to hello-world.txt
+        run: echo "Hello @${{ github.event.client_payload.github.actor }}!" >> hello-world.txt
+          
+      # Commit the change to the PR branch
+      - name: Commit to the PR branch
+        run: |
+          git config --global user.name 'actions-bot'
+          git config --global user.email '58130806+actions-bot@users.noreply.github.com'
+          git add -A
+          git commit -m "[help-command] Add hello response"
+          git push
+
       - name: Add reaction
         uses: peter-evans/create-or-update-comment@v3
         with:
           token: ${{ secrets.PAT }}
+          repository: ${{ github.event.client_payload.github.payload.repository.full_name }}
           comment-id: ${{ github.event.client_payload.github.payload.comment.id }}
-          reaction-type: hooray
-
-      - name: Create comment
-        uses: peter-evans/create-or-update-comment@v3
-        with:
-          token: ${{ secrets.PAT }}
-          issue-number: ${{ github.event.client_payload.github.payload.issue.number }}
-          body: |
-            Hello @${{ github.event.client_payload.github.actor }}!
+          reactions: hooray
