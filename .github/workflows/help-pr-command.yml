@@ -14,8 +14,5 @@ jobs:
           token: ${{ secrets.PAT }}
           repository: ${{ github.event.client_payload.github.payload.repository.full_name }}
           comment-id: ${{ github.event.client_payload.github.payload.comment.id }}
-          body: |
-            > Command | Description
-            > --- | ---
-            > /render | Render Jupyter notebook as reStructured Text
+          body: Hello world!
           reactions: hooray
